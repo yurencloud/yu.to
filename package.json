@@ -1,0 +1,17 @@
+{
+  "name": "yu.to",
+  "version": "1.0.0",
+  "description": "js data simple format",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "yu.to"
+  ],
+  "author": "mackwang",
+  "license": "ISC",
+  "dependencies": {
+    "yu.date": "^1.0.2"
+  }
+}
