@@ -2,6 +2,8 @@
 
 var date = require('yu.date');
 
+var globalExtend = {}
+
 /*
 * 将字符串参数，转成对象参数
 * @param {String} option - 字符串参数
@@ -75,6 +77,7 @@ function singleConversion(sourceObject, optionValue, key) {
             sourceObject[key] = array
             break
         default:
+            globalExtend[config.option](sourceObject)
             break
     }
 }
@@ -103,7 +106,11 @@ function conversionObject(sourceObject, option) {
 * @param {Object, String} option - 配置参数
 * @return void
 * */
-function to(source, option) {
+function to(source, option, extend) {
+    if(extend) {
+        globalExtend = extend
+    }
+
     if (typeof option === 'string') {
         option = getOptionFromString(option)
     }
