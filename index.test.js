@@ -46,6 +46,17 @@ test('枚举转换', () => {
     expect(obj.status).toBe('健康')
 })
 
+test('枚举转换,枚举中存在冒号问题', () => {
+    var obj = {
+        status: 1,  // 0 不健康 1 健康
+    }
+    to(obj, {
+        status: 'enum:https://www.a.com,https://www.b.com',
+    })
+
+    expect(obj.status).toBe('https://www.b.com')
+})
+
 test('属性复制', () => {
     var obj = {
         status: 1,  // 0 不健康 1 健康
@@ -65,8 +76,6 @@ test('属性复制后，再枚举', () => {
         status: 'copy:statusLabel',
         statusLabel: 'enum:不健康,健康',
     })
-
-    console.log(obj);
     expect(obj.statusLabel).toBe('健康')
 })
 
@@ -81,8 +90,21 @@ test('无限深度属性处理', () => {
     to(obj, {
         'father.child.name': 'rename:myname',
     })
-
+    expect(obj.father.child.name).toBe(undefined)
     expect(obj.father.child.myname).toBe('tom')
+})
+
+test('字符串转数组', () => {
+    var obj = {
+        words: 'a,b,c',
+        words2: 'a|b|c'
+    }
+    to(obj, {
+        words: 'array',
+        words2: 'array:|',
+    })
+    expect(obj.words[2]).toBe('c')
+    expect(obj.words2[2]).toBe('c')
 })
 
 test('处理数组对象', () => {
@@ -108,12 +130,22 @@ test('处理数组对象', () => {
     expect(objArray[1].status).toBe('不健康')
 })
 
-var a = {
-    name: {
-        name: {
-            name: 'tom'
-        }
+test('字符串参数', () => {
+    var obj = {
+        status: 1,  // 0 不健康 1 健康
     }
-}
+    to(obj, 'status:rename:statusLabel&statusLabel:enum:不健康,健康')
 
-console.log(a, a['name']['name']['name'])
+    expect(obj.statusLabel).toBe('健康')
+})
+
+test('参数数组', () => {
+    var obj = {
+        status: 1,  // 0 不健康 1 健康
+    }
+    to(obj, {
+            status: ['copy:statusLabel', 'enum:不健康,健康']
+        }
+    )
+    expect(obj.status).toBe('健康')
+})
