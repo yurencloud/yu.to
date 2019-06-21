@@ -2,7 +2,7 @@
 #### 快速上手
 
 > 主要应对分页数据的快速处理
-```
+```javascript
 var to = require('./src/index')
 
 var response = {
