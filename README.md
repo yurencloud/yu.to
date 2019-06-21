@@ -66,35 +66,29 @@ console.log(response.data)
 // ************* 处理后输出结果 *************
 
 /*
-  { currentPage: 1,
-      pageSize: 10,
-      totalNum: 3,
-      totalPage: 1,
-      data:
-       [
-        { id: 21,
-           userRemark: '/',
-           receiverPhone: '16657100261',
-           receiver: '姓名:杜乐平',
-           status: 1,
-           type: '0',
-           dispatchTime: '/',
-           createTime: '2019-06-14',
-           updateTime: '2019-06-14 17:53:42',
-           productOrders: [
-               {
-                 id: 63,
-                 productName: '华为华为',
-                 unitPrice: '10元',
-                 quantity: 1,
-                 type: true,
-                 status: '成功',
-               }
-           ],
-           statusLabel: '成功'
-        }
-       ]
-   }
+  [
+    { id: 21,
+       userRemark: '/',
+       receiverPhone: '16657100261',
+       receiver: '姓名:杜乐平',
+       status: 1,
+       type: '0',
+       dispatchTime: '/',
+       createTime: '2019-06-14',
+       updateTime: '2019-06-14 17:53:42',
+       productOrders: [
+           {
+             id: 63,
+             productName: '华为华为',
+             unitPrice: '10元',
+             quantity: 1,
+             type: true,
+             status: '成功',
+           }
+       ],
+       statusLabel: '成功'
+    }
+   ]
 */
 ```
 
