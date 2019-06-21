@@ -122,6 +122,10 @@ function singleConversion(source, optionItem, key) {
             if (config.value  && config.value.length) {
                 formatDate = config.value
             }
+            if(source[key] === null){
+                source[key] = globalConfig.default
+                break
+            }
             source[key] = date.parse(source[key], formatDate).getTime()
             break
         case 'enum':
