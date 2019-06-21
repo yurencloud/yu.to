@@ -142,6 +142,20 @@ test('时间戳转日期', () => {
     expect(obj.birthday).toBe('2019-06-18 11:16:29')
 })
 
+test('比较判断，得到布尔值或赋值', () => {
+    var obj = {
+        status: 'SUCCESS',
+        type: 'order',
+    }
+    to(obj, {
+        status: 'compare:SUCCESS',
+        type: 'compare:order?交易:购买',
+    })
+
+    expect(obj.status).toBe(true)
+    expect(obj.type).toBe('交易')
+})
+
 test('时间戳转日期2', () => {
     var obj = {
         birthday: 1560827789638,
@@ -195,6 +209,28 @@ test('日期转时间戳3', () => {
     })
 
     expect(obj.birthday).toBe(1560787200000)
+})
+
+test('在内容前添加字符串', () => {
+    var obj = {
+        name: '王小明',
+    }
+    to(obj, {
+        name: 'prepend:姓名:',
+    })
+
+    expect(obj.name).toBe('姓名:王小明')
+})
+
+test('在内容后添加字符串', () => {
+    var obj = {
+        money: 3.25,
+    }
+    to(obj, {
+        money: 'append:元',
+    })
+
+    expect(obj.money).toBe('3.25元')
 })
 
 test('枚举转换', () => {
@@ -324,6 +360,24 @@ test('无限深度属性处理2', () => {
     })
     expect(obj.father.child.name).toBe(undefined)
     expect(obj.father.child.myname).toBe('tom')
+})
+
+test('无限深度数组属性处理', () => {
+    var obj = {
+        father: {
+            child: {
+                family: [
+                    { name: 'tom', status: 1},
+                    { name: 'cindy', status: 1},
+                    { name: 'bob', status: 0},
+                ]
+            }
+        }
+    }
+    to(obj, {
+        'father.child.family.status': {enum: '健康,不健康'},
+    })
+    expect(obj.father.child.family[1].status).toBe('不健康')
 })
 
 test('字符串转数组', () => {
@@ -489,9 +543,7 @@ test('处理分页数据', () => {
         createTime: 'date',
         updateTime: 'date',
         remarks: 'default',
+        'productOrders.status': 'copy:statusLabel',
+        'productOrders.statusLabel': 'enum:交易成功,交易失败,正在交易',
     })
-
-    console.log(dataSource)
-    // expect(objArray[0].status).toBe('健康')
-    // expect(objArray[1].status).toBe('不健康')
 })

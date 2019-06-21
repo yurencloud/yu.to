@@ -50,7 +50,7 @@ function getOptionConfig(optionItem) {
 * 对操作数据对象应用单个配置对象
 * @param {Object} source - 操作数据对象
 * @param {String} optionItem - 字符串参数
-* @return {String} key - 操作数据对象的属性名
+* @param {String} key - 操作数据对象的属性名
 * */
 function singleConversion(source, optionItem, key) {
     var config = getOptionConfig(optionItem)
@@ -59,6 +59,12 @@ function singleConversion(source, optionItem, key) {
         for (var i = 0; i < keys.length - 1; i++) {
             source = source[keys[i]]
             key = keys[i + 1]
+            if(source instanceof Array){
+                for (var j = 0; j < source.length; j++) {
+                    singleConversion(source[j], optionItem, key)
+                }
+                return
+            }
         }
     }
     switch (config.option) {
@@ -84,6 +90,21 @@ function singleConversion(source, optionItem, key) {
             break
         case 'boolean':
             source[key] = Boolean(source[key])
+            break
+        case 'compare':
+            if(config.value.indexOf('?') > 0){
+                var comp = config.value.split('?');
+                var opt = comp[1].split(':')
+                source[key] = source[key] + '' === comp[0] ? opt[0] : opt[1]
+            }else{
+                source[key] = source[key] + '' === config.value
+            }
+            break
+        case 'append':
+            source[key] = source[key] + '' + config.value
+            break
+        case 'prepend':
+            source[key] = config.value + '' + source[key]
             break
         case 'date':
             var format = globalConfig.dateFormat
@@ -140,7 +161,6 @@ function singleConversion(source, optionItem, key) {
 * 转换单个数据对象
 * @param {Object} source - 操作数据对象
 * @param {Object} option - 参数
-* @return void
 * */
 function conversionObject(source, option) {
     for (var key in option) {
@@ -158,7 +178,6 @@ function conversionObject(source, option) {
 * 根据配置，转换对象或数组
 * @param {Object, Array} source - 数据对象
 * @param {Object, String} option - 配置参数
-* @return void
 * */
 function to(source, option) {
     if (typeof option === 'string') {
