@@ -1,4 +1,94 @@
 
+#### 快速上手
+
+> 主要应对分页数据的快速处理
+```
+var to = require('./src/index')
+
+var response = {
+    'currentPage': 1,
+    'pageSize': 10,
+    'totalNum': 3,
+    'isMore': 0,
+    'totalPage': 1,
+    'startIndex': 0,
+    'data': [
+        {
+            'id': 21,
+            'userRemark': null,
+            'receiverPhone': '16657100261',
+            'receiver': '杜乐平',
+            'status': 1,
+            'type': '0',
+            'dispatchTime': null,
+            'createTime': 1560506022000,
+            'updateTime': 1560506022000,
+            'productOrders': [
+                {
+                    'id': 63,
+                    'productName': '华为华为',
+                    'unitPrice': 10,
+                    'quantity': 1,
+                    'type': 'ORDER',
+                    'status': 'SUCCESS',
+                }
+            ]
+        }
+    ]
+}
+
+to(response.data, {
+    userRemark: 'default',
+    receiver: 'prepend:姓名:',
+    status: 'copy:statusLabel',
+    statusLabel: 'enum:失败,成功',
+    dispatchTime: 'date',
+    createTime: 'date:yyyy-MM-dd',
+    updateTime: 'date',
+    'productOrders.unitPrice': 'append:元',
+    'productOrders.type': 'compare:ORDER',
+    'productOrders.status': 'compare:SUCCESS?成功:失败',
+})
+
+console.log(response.data)
+
+// ************* 处理后输出结果 *************
+
+/*
+  { currentPage: 1,
+      pageSize: 10,
+      totalNum: 3,
+      isMore: 0,
+      totalPage: 1,
+      startIndex: 0,
+      data:
+       [
+        { id: 21,
+           userRemark: '/',
+           receiverPhone: '16657100261',
+           receiver: '姓名:杜乐平',
+           status: 1,
+           type: '0',
+           dispatchTime: '/',
+           createTime: '2019-06-14',
+           updateTime: '2019-06-14 17:53:42',
+           productOrders: [
+               {
+                 id: 63,
+                 productName: '华为华为',
+                 unitPrice: '10元',
+                 quantity: 1,
+                 type: true,
+                 status: '成功',
+               }
+           ],
+           statusLabel: '成功'
+        }
+       ]
+   }
+*/
+```
+
 #### 使用说明
 
 ```javascript
