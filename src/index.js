@@ -184,6 +184,9 @@ function conversionObject(source, option) {
 * @param {Object, String} option - 配置参数
 * */
 function to(source, option) {
+    if(source === null) {
+        return null
+    }
     if (typeof option === 'string') {
         option = getOptionFromString(option)
     }

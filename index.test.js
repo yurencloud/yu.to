@@ -595,3 +595,11 @@ test('处理分页数据', () => {
         'productOrders.statusLabel': 'enum:交易成功,交易失败,正在交易',
     })
 })
+
+test('输入null时，不处理，返回null', () => {
+    var data = null
+    to(data, {
+        status: 'enum:交易成功,交易失败,正在交易',
+    })
+    expect(data).toBe(null)
+})
