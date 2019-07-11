@@ -31,6 +31,10 @@ function getOptionFromString(option) {
 * @return {Object} config - 配置对象 {option:'配置名',value:'配置值'}
 * */
 function getOptionConfig(optionItem) {
+    if(typeof optionItem === 'function'){
+       return {option: 'function', value: optionItem}
+    }
+
     if (typeof optionItem === 'object') {
         for (var key in optionItem) {//用javascript的for/in循环遍历对象的属性
             return {option: key, value: optionItem[key]}
@@ -155,6 +159,9 @@ function singleConversion(source, optionItem, key) {
             var array = source[key].split(splitChar)
             source[key] = array
             break
+        case 'function':
+            source[key] = config.value(source[key])
+            break
         default:
             globalExtend[config.option](source, key, config.value)
             break
@@ -173,7 +180,16 @@ function conversionObject(source, option) {
                 singleConversion(source, option[key][i], key)
             }
         } else {
-            singleConversion(source, option[key], key)
+            if(typeof option[key] === 'object'){
+                console.log(option[key]);
+                const keyOption = option[key]
+                for(var k in keyOption){
+                    // 这里使用了es6的语法
+                    singleConversion(source, {[k]:keyOption[k]}, key)
+                }
+            }else{
+                singleConversion(source, option[key], key)
+            }
         }
     }
 }

@@ -65,6 +65,16 @@ test('对象型多个配置(值为对象,值的值为字符串)', () => {
     expect(obj.statusLabel).toBe('健康')
 })
 
+test('对象型多个配置(值为对象,值的值为字符串, 值有多个属性) [es6]', () => {
+    var obj = {
+        status: 1,  // 0 不健康 1 健康
+    }
+    to(obj, {
+        status: {copy: 'statusLabel', enum: '不健康,健康'},
+    })
+    expect(obj.statusLabel).toBe(1)
+    expect(obj.status).toBe('健康')
+})
 
 test('对象型单个配置(值为对象,值的值为对象)', () => {
     var obj = {
@@ -367,9 +377,9 @@ test('无限深度数组属性处理', () => {
         father: {
             child: {
                 family: [
-                    { name: 'tom', status: 1},
-                    { name: 'cindy', status: 1},
-                    { name: 'bob', status: 0},
+                    {name: 'tom', status: 1},
+                    {name: 'cindy', status: 1},
+                    {name: 'bob', status: 0},
                 ]
             }
         }
@@ -529,7 +539,7 @@ test('拓展功能3', () => {
     })
 
     to(obj, {
-            status: [{addOne: ''},{addTwo: ''}]
+            status: [{addOne: ''}, {addTwo: ''}]
         }
     )
     expect(obj.status).toBe(5)
@@ -602,4 +612,16 @@ test('输入null时，不处理，返回null', () => {
         status: 'enum:交易成功,交易失败,正在交易',
     })
     expect(data).toBe(null)
+})
+
+test('option支持函数', () => {
+    var obj = {
+        myname: 'mack',
+    }
+    to(obj, {
+        myname: function (source) {
+            return source + ' wang'
+        }
+    })
+    expect(obj.myname).toBe('mack wang')
 })
