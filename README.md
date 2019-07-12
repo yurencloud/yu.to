@@ -115,147 +115,7 @@ console.log(response.data)
 
 
 
-#### 三、自定义拓展配置参数
-
-> 多次调用 to.extend() 方法会以merge的形式合并拓展配置参数
-
-```javascript
-to.extend({
-  addOne: function (source, key, configValue) {
-    source[key] = Number(source[key]) + 1
-  }
-})
-var obj = {
-  status: '1',
-}
-to(obj, {
-  status: 'addOne'
-}
-
-// {status: 2}
-```
-
-
-
-
-
-#### 四、配置参数支持多种数据类型
-
-##### 字符串型单个配置(最简单的使用)
-
-```javascript
-var obj = { status: 1 }
-to(obj, 'status:string') 
-// {status: '1'}
-```
-
-
-
-##### 字符串型配置(以&符号分隔)
-
-```javascript
-var obj = { status: 1 }
-to(obj, 'status:rename:statusLabel&statusLabel:enum:不健康,健康') 
-// {statusLabel: '健康'}
-```
-
-
-
-> 没有值的，一律不支持对象型配置，比如string,number,boolean
-
-##### 对象型单个配置(值为字符串)
-
-```javascript
-var obj = { status: 1 }
-to(obj, {
-  status: 'enum:不健康,健康'
-})
-// {status: '健康'}
-```
-
-
-
-##### 对象型多个配置(值为字符串)
-
-```javascript
-var obj = { status: 1 }
-to(obj, {
-  status: 'rename:statusLabel',
-  statusLabel: 'enum:不健康,健康'
-})
-// {statusLabel:'健康'}
-```
-
-
-
-##### 对象型单个配置(值为对象,值的值为字符串)
-
-```javascript
-var obj = { status: 1 }
-to(obj, {
-  status: {enum: '不健康,健康'}
-})
-// {status: '健康'}
-```
-
-
-
-##### 对象型多个配置(值为对象,值的值为字符串)
-
-```javascript
- var obj = { status: 1 }
- to(obj, {
-   status: {rename: 'statusLabel'},
-   statusLabel: {enum: '不健康,健康'}
- })
-// {statusLabel: '健康'}
-```
-
-
-
-##### 对象型单个配置(值为对象,值的值为对象)
-
-```javascript
-var obj = { status: 'health' }
-to(obj, {
-  status: {mapping: {unHealth: '不健康', health: '健康'}},
-})
-// {status: '健康'}
-```
-
-
-
-##### 对象型多个配置(值为对象,值的值为对象)
-
-```javascript
-var obj = { status: 'health' }
-to(obj, {
-  status: {rename: 'statusLabel'},
-  statusLabel: {mapping: {unHealth: '不健康', health: '健康'}},
-})
-// {statusLabel: '健康'}
-```
-
-
-
-#### 五、配置参数数组
-
-> 注意：如果配置参数是一个数组，则他只会作用于当前的属性，会按配置参数数组中的顺序处理
-
-```javascript
-var obj = {
-  status: 1,  // 0 不健康 1 健康
-}
-to(obj, {
-  status: [{copy: 'statusLabel'}, {enum: ['不健康', '健康']}]
-}
-
-expect(obj.status).toBe('健康')
-```
-
-
-
-#### 六、使用示例
+#### 三、使用示例
 
 ##### 重命名属性
 
@@ -493,7 +353,7 @@ to(objArray, {
 
 
 
-#### 七、多层嵌套属性，多层属性数组处理
+#### 四、多层嵌套属性，多层属性数组处理
 
 ##### 多层嵌套属性
 
@@ -544,3 +404,155 @@ to(obj, {
 
 // obj.father.child.family[1].status === '不健康'
 ```
+
+#### 五、自定义拓展配置参数
+
+> 多次调用 to.extend() 方法会以merge的形式合并拓展配置参数
+
+```javascript
+to.extend({
+  addOne: function (source, key, configValue) {
+    source[key] = Number(source[key]) + 1
+  }
+})
+var obj = {
+  status: '1',
+}
+to(obj, {
+  status: 'addOne'
+}
+
+// {status: 2}
+```
+
+#### 六、配置参数数组
+
+> 注意：如果配置参数是一个数组，则他只会作用于当前的属性，会按配置参数数组中的顺序处理
+
+```javascript
+var obj = {
+  status: 1,  // 0 不健康 1 健康
+}
+to(obj, {
+  status: [{copy: 'statusLabel'}, {enum: ['不健康', '健康']}]
+}
+
+expect(obj.status).toBe('健康')
+```
+
+
+
+#### 七、配置参数支持多种数据类型
+
+##### 字符串型单个配置(最简单的使用)
+
+```javascript
+var obj = { status: 1 }
+to(obj, 'status:string') 
+// {status: '1'}
+```
+
+
+
+##### 字符串型配置(以&符号分隔)
+
+```javascript
+var obj = { status: 1 }
+to(obj, 'status:rename:statusLabel&statusLabel:enum:不健康,健康') 
+// {statusLabel: '健康'}
+```
+
+
+
+> 没有值的，一律不支持对象型配置，比如string,number,boolean
+
+##### 对象型单个配置(值为字符串)
+
+```javascript
+var obj = { status: 1 }
+to(obj, {
+  status: 'enum:不健康,健康'
+})
+// {status: '健康'}
+```
+
+
+
+##### 对象型多个配置(值为字符串)
+
+```javascript
+var obj = { status: 1 }
+to(obj, {
+  status: 'rename:statusLabel',
+  statusLabel: 'enum:不健康,健康'
+})
+// {statusLabel:'健康'}
+```
+
+
+
+##### 对象型单个配置(值为对象,值的值为字符串)
+
+```javascript
+var obj = { status: 1 }
+to(obj, {
+  status: {enum: '不健康,健康'}
+})
+// {status: '健康'}
+```
+
+
+
+##### 对象型多个配置(值为对象,值的值为字符串)
+
+```javascript
+ var obj = { status: 1 }
+ to(obj, {
+   status: {rename: 'statusLabel'},
+   statusLabel: {enum: '不健康,健康'}
+ })
+// {statusLabel: '健康'}
+```
+
+
+
+##### 对象型单个配置(值为对象,值的值为对象)
+
+```javascript
+var obj = { status: 'health' }
+to(obj, {
+  status: {mapping: {unHealth: '不健康', health: '健康'}},
+})
+// {status: '健康'}
+```
+
+##### 对象型单个配置(值为对象,值的值为对象，值有多个属性)
+
+```
+var obj = {
+    status: 1,  // 0 不健康 1 健康
+}
+to(obj, {
+    status: {copy: 'statusLabel', enum: '不健康,健康'},
+})
+expect(obj.statusLabel).toBe(1)
+expect(obj.status).toBe('健康')
+
+```
+
+
+##### 对象型多个配置(值为对象,值的值为对象)
+
+```javascript
+var obj = { status: 'health' }
+to(obj, {
+  status: {rename: 'statusLabel'},
+  statusLabel: {mapping: {unHealth: '不健康', health: '健康'}},
+})
+// {statusLabel: '健康'}
+```
+
+---
+#### 开发日志
+2019.07.12 `v1.0.2`
+1. update: 增加option对函数的支持，和对象参数允许有多个属性
