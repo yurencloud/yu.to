@@ -181,7 +181,6 @@ function conversionObject(source, option) {
             }
         } else {
             if(typeof option[key] === 'object'){
-                console.log(option[key]);
                 const keyOption = option[key]
                 for(var k in keyOption){
                     // 这里使用了es6的语法

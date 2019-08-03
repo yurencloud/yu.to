@@ -405,6 +405,20 @@ to(obj, {
 // obj.father.child.family[1].status === '不健康'
 ```
 
+##### option支持函数`重点功能`
+
+```javascript
+var obj = {
+    myname: 'mack',
+}
+to(obj, {
+    myname: function (source) {
+        return source + ' wang'
+    }
+})
+expect(obj.myname).toBe('mack wang')
+```
+
 #### 五、自定义拓展配置参数
 
 > 多次调用 to.extend() 方法会以merge的形式合并拓展配置参数
